@@ -33,15 +33,16 @@ export class ClaudeService {
     const categoryNames = categories.map(c => c.name);
     const todayDate = today();
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-request-source': 'user-triggered',
-    };
-
-    if (!proxyUrl && apiKey) {
-      headers['x-api-key'] = apiKey;
-    }
+    // When going through a proxy, send only Content-Type — custom Anthropic headers
+    // trigger CORS preflight that Apps Script won't whitelist, blocking the request.
+    const headers = proxyUrl
+      ? { 'Content-Type': 'application/json' }
+      : {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-request-source': 'user-triggered',
+        };
 
     const body = {
       model: MODEL,
