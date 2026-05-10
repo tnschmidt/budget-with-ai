@@ -47,7 +47,7 @@ export class DashboardView {
       ...months.slice(0, 5).map(m => getStorage().getTransactions(m)),
     ]);
 
-    const allMonthTxns = [...historicalTxns, currentTxns];
+    const allMonthTxns = [...historicalTxns, currentTxns]; // index 0 = oldest, last = current
     const monthlyExpenses = allMonthTxns.map(txns =>
       txns.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0)
     );
@@ -57,13 +57,15 @@ export class DashboardView {
     const lastMonthExpenses = monthlyExpenses[monthlyExpenses.length - 2] || 0;
     const delta = currentExpenses - lastMonthExpenses;
 
+    // Spend by category (current month)
     const spendByCat = {};
     currentTxns.filter(t => t.type === 'expense').forEach(t => {
       spendByCat[t.category] = (spendByCat[t.category] || 0) + t.amount;
     });
 
+    // Anomalies: compare current to 3-month average
     const anomalies = [];
-    const catHistory = {};
+    const catHistory = {}; // cat → [spend per prior month]
     historicalTxns.slice(-3).forEach(txns => {
       const m = {};
       txns.filter(t => t.type === 'expense').forEach(t => { m[t.category] = (m[t.category] || 0) + t.amount; });
@@ -79,20 +81,28 @@ export class DashboardView {
       }
     });
 
+    // Projected spend
     const dailyRate = dayOfMonth > 0 ? currentExpenses / dayOfMonth : 0;
     const projected = dailyRate * totalDays;
+
+    // Savings rate
     const savingsRate = currentIncome > 0 ? ((currentIncome - currentExpenses) / currentIncome * 100) : null;
 
+    // Top categories
     const expenseCats = categories.filter(c => c.type === 'expense');
     const catMap = Object.fromEntries(categories.map(c => [c.name, c]));
-    const topCats = Object.entries(spendByCat).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    const topCats = Object.entries(spendByCat)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3);
+
+    // Budget over-limit cats
     const overBudget = expenseCats.filter(c => c.monthlyBudget && (spendByCat[c.name] || 0) > c.monthlyBudget);
 
     const insightsEl = this._root.querySelector('#insights');
     insightsEl.innerHTML = '';
 
     // 1. Total this month
-    insightsEl.appendChild(this._card(`
+    const totalCard = this._card(`
       <div class="insight-card-header">
         <div class="insight-card-title">${monthLabel(currentMk)}</div>
         ${delta !== 0 ? `<span style="font-size:12px;color:${delta > 0 ? 'var(--negative)' : 'var(--positive)'}">
@@ -101,7 +111,8 @@ export class DashboardView {
       </div>
       <div class="insight-card-value">${formatCurrency(currentExpenses)}</div>
       ${currentIncome ? `<div class="insight-card-sub">Income: ${formatCurrency(currentIncome)}</div>` : ''}
-    `));
+    `);
+    insightsEl.appendChild(totalCard);
 
     // 2. Sparkline trend
     if (months.length >= 2) {
@@ -121,7 +132,7 @@ export class DashboardView {
       });
     }
 
-    // 3. Budget health
+    // 3. Budget health (categories with budgets)
     const budgetedCats = expenseCats.filter(c => c.monthlyBudget);
     if (budgetedCats.length) {
       const budgetCard = this._card(`
@@ -171,7 +182,7 @@ export class DashboardView {
 
     // 6. Top categories
     if (topCats.length) {
-      insightsEl.appendChild(this._card(`
+      const topCard = this._card(`
         <div class="insight-card-title" style="margin-bottom:var(--space-sm)">Top Spending</div>
         <div class="top-cats">
           ${topCats.map(([name, amt], i) => {
@@ -188,7 +199,8 @@ export class DashboardView {
             `;
           }).join('')}
         </div>
-      `));
+      `);
+      insightsEl.appendChild(topCard);
     }
 
     // 7. Projected spend

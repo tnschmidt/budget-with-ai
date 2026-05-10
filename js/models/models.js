@@ -1,24 +1,21 @@
-import { today } from '../utils/dates.js';
-
 export function createTransaction(data = {}) {
   return {
-    id: `txn_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
-    date: data.date || today(),
-    amount: parseFloat(data.amount) || 0,
+    id: data.id || `txn_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+    date: data.date || new Date().toISOString().slice(0, 10),
+    amount: data.amount || 0,
     type: data.type || 'expense',
     category: data.category || 'Uncategorized',
     merchant: data.merchant || '',
     note: data.note || '',
-    createdAt: new Date().toISOString(),
+    createdAt: data.createdAt || new Date().toISOString(),
     source: data.source || 'manual',
     recurringId: data.recurringId || null,
-    ...data,
   };
 }
 
 export function createCategory(data = {}) {
   return {
-    id: data.id || `cat_${data.name?.toLowerCase().replace(/\s+/g, '_') || Date.now()}`,
+    id: data.id || `cat_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
     name: data.name || 'New Category',
     type: data.type || 'expense',
     color: data.color || '#4fc3f7',
@@ -32,7 +29,7 @@ export function createRecurring(data = {}) {
   return {
     id: data.id || `rec_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
     name: data.name || '',
-    amount: parseFloat(data.amount) || 0,
+    amount: data.amount || 0,
     category: data.category || 'Uncategorized',
     merchant: data.merchant || '',
     note: data.note || '',

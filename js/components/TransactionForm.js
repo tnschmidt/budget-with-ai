@@ -66,6 +66,7 @@ export class TransactionForm {
       onClose: () => {},
     }).open();
 
+    // Type toggle
     let selectedType = data.type || 'expense';
     content.querySelectorAll('[data-type]').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -131,6 +132,7 @@ export class TransactionForm {
       }
     });
 
+    // Focus amount field
     content.querySelector('#f-amount')?.focus();
   }
 }

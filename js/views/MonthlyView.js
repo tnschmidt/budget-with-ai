@@ -64,6 +64,7 @@ export class MonthlyView {
     const totalExpense = txns.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
     const net = totalIncome - totalExpense;
 
+    // Summary cards
     this._root.querySelector('#summary-row').innerHTML = `
       <div class="summary-cards">
         <div class="summary-card">
@@ -81,6 +82,7 @@ export class MonthlyView {
       </div>
     `;
 
+    // Budget table (expense categories with spending)
     const spendByCat = {};
     txns.filter(t => t.type === 'expense').forEach(t => {
       spendByCat[t.category] = (spendByCat[t.category] || 0) + t.amount;
@@ -128,6 +130,7 @@ export class MonthlyView {
       tableEl.appendChild(table);
     }
 
+    // Transaction list grouped by date
     const listEl = this._root.querySelector('#txn-list');
     txns.sort((a, b) => b.date.localeCompare(a.date));
 

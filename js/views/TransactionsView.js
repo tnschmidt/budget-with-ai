@@ -170,6 +170,7 @@ export class TransactionsView {
       return;
     }
 
+    // Group by date
     const groups = {};
     txns.forEach(t => {
       if (!groups[t.date]) groups[t.date] = [];
