@@ -10,7 +10,7 @@ export function navigate(hash) {
 }
 
 export function currentHash() {
-  return window.location.hash.slice(1).split('?')[0] || 'dashboard';
+  return window.location.hash.slice(1).split('?')[0] || 'transactions';
 }
 
 export function getHashParam(name) {
@@ -20,7 +20,7 @@ export function getHashParam(name) {
 
 function render() {
   const hash = currentHash();
-  const fn = routes[hash] || routes['dashboard'];
+  const fn = routes[hash] || routes['transactions'];
   if (!fn) return;
 
   // Update nav active state
