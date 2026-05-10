@@ -12,11 +12,11 @@ Return exactly this JSON structure:
 
 Rules:
 - date: resolve relative dates ("yesterday", "last Tuesday") using today's date: ${todayDate}. Default to today if unclear.
-- amount: positive number, no currency symbols
+- amount: ALWAYS a positive number (never a string). Convert spoken amounts: "six fifty" = 6.50, "twelve dollars" = 12.00, "a dollar twenty five" = 1.25, "forty" = 40.00, "five bucks" = 5.00. Never put the dollar amount in the note field.
 - type: "expense" or "income"
 - category: pick the best match from this list (or "Uncategorized"): ${categoryNames.join(', ')}
 - merchant: business/store name, or empty string
-- note: any additional detail, or empty string`;
+- note: any additional context EXCEPT the amount — never include the dollar amount here`;
 }
 
 export class ClaudeService {
@@ -74,8 +74,13 @@ export class ClaudeService {
       throw new Error('PARSE_ERROR');
     }
 
+    // Coerce amount to number in case Claude returned a string
+    if (typeof parsed.amount === 'string') {
+      parsed.amount = parseFloat(parsed.amount.replace(/[^0-9.]/g, ''));
+    }
+
     // Validate required fields
-    if (typeof parsed.amount !== 'number' || parsed.amount <= 0) {
+    if (typeof parsed.amount !== 'number' || isNaN(parsed.amount) || parsed.amount <= 0) {
       throw new Error('PARSE_ERROR');
     }
 
