@@ -42,7 +42,7 @@ export class TransactionsView {
 
       ${this._speech.supported ? `
         <div class="mic-section">
-          <button class="mic-btn" id="mic-btn" title="Tap to speak">🎤</button>
+          <button class="mic-btn" id="mic-btn" title="Tap to speak"><span class="material-symbols-outlined" style="font-size:36px">mic</span></button>
           <div class="mic-status" id="mic-status">Tap to speak an expense</div>
           <div class="mic-transcript" id="mic-transcript"></div>
         </div>
@@ -53,9 +53,9 @@ export class TransactionsView {
       </div>
 
       <div class="month-nav">
-        <button class="btn-icon" id="prev-month">‹</button>
+        <button class="btn-icon" id="prev-month"><span class="material-symbols-outlined">chevron_left</span></button>
         <span class="month-nav-label" id="month-label">${monthLabel(this._mk)}</span>
-        <button class="btn-icon" id="next-month">›</button>
+        <button class="btn-icon" id="next-month"><span class="material-symbols-outlined">chevron_right</span></button>
       </div>
 
       <div id="txn-list">
@@ -166,11 +166,10 @@ export class TransactionsView {
     txns.sort((a, b) => b.date.localeCompare(a.date) || b.createdAt?.localeCompare(a.createdAt || '') || 0);
 
     if (!txns.length) {
-      listEl.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><p>No transactions this month</p></div>`;
+      listEl.innerHTML = `<div class="empty-state"><div class="empty-icon"><span class="material-symbols-outlined">inbox</span></div><p>No transactions this month</p></div>`;
       return;
     }
 
-    // Group by date
     const groups = {};
     txns.forEach(t => {
       if (!groups[t.date]) groups[t.date] = [];
@@ -192,7 +191,7 @@ export class TransactionsView {
         const row = document.createElement('div');
         row.className = 'txn-row';
         row.innerHTML = `
-          <span style="font-size:22px">${cat.icon || '📦'}</span>
+          <span class="material-symbols-outlined" style="font-size:22px">${cat.icon || 'category'}</span>
           <div class="txn-info">
             <div class="txn-merchant">${txn.merchant || txn.category}</div>
             <div class="txn-meta">

@@ -47,7 +47,7 @@ export class DashboardView {
       ...months.slice(0, 5).map(m => getStorage().getTransactions(m)),
     ]);
 
-    const allMonthTxns = [...historicalTxns, currentTxns]; // index 0 = oldest, last = current
+    const allMonthTxns = [...historicalTxns, currentTxns];
     const monthlyExpenses = allMonthTxns.map(txns =>
       txns.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0)
     );
@@ -57,15 +57,13 @@ export class DashboardView {
     const lastMonthExpenses = monthlyExpenses[monthlyExpenses.length - 2] || 0;
     const delta = currentExpenses - lastMonthExpenses;
 
-    // Spend by category (current month)
     const spendByCat = {};
     currentTxns.filter(t => t.type === 'expense').forEach(t => {
       spendByCat[t.category] = (spendByCat[t.category] || 0) + t.amount;
     });
 
-    // Anomalies: compare current to 3-month average
     const anomalies = [];
-    const catHistory = {}; // cat → [spend per prior month]
+    const catHistory = {};
     historicalTxns.slice(-3).forEach(txns => {
       const m = {};
       txns.filter(t => t.type === 'expense').forEach(t => { m[t.category] = (m[t.category] || 0) + t.amount; });
@@ -81,28 +79,20 @@ export class DashboardView {
       }
     });
 
-    // Projected spend
     const dailyRate = dayOfMonth > 0 ? currentExpenses / dayOfMonth : 0;
     const projected = dailyRate * totalDays;
-
-    // Savings rate
     const savingsRate = currentIncome > 0 ? ((currentIncome - currentExpenses) / currentIncome * 100) : null;
 
-    // Top categories
     const expenseCats = categories.filter(c => c.type === 'expense');
     const catMap = Object.fromEntries(categories.map(c => [c.name, c]));
-    const topCats = Object.entries(spendByCat)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 3);
-
-    // Budget over-limit cats
+    const topCats = Object.entries(spendByCat).sort((a, b) => b[1] - a[1]).slice(0, 3);
     const overBudget = expenseCats.filter(c => c.monthlyBudget && (spendByCat[c.name] || 0) > c.monthlyBudget);
 
     const insightsEl = this._root.querySelector('#insights');
     insightsEl.innerHTML = '';
 
     // 1. Total this month
-    const totalCard = this._card(`
+    insightsEl.appendChild(this._card(`
       <div class="insight-card-header">
         <div class="insight-card-title">${monthLabel(currentMk)}</div>
         ${delta !== 0 ? `<span style="font-size:12px;color:${delta > 0 ? 'var(--negative)' : 'var(--positive)'}">
@@ -111,8 +101,7 @@ export class DashboardView {
       </div>
       <div class="insight-card-value">${formatCurrency(currentExpenses)}</div>
       ${currentIncome ? `<div class="insight-card-sub">Income: ${formatCurrency(currentIncome)}</div>` : ''}
-    `);
-    insightsEl.appendChild(totalCard);
+    `));
 
     // 2. Sparkline trend
     if (months.length >= 2) {
@@ -132,7 +121,7 @@ export class DashboardView {
       });
     }
 
-    // 3. Budget health (categories with budgets)
+    // 3. Budget health
     const budgetedCats = expenseCats.filter(c => c.monthlyBudget);
     if (budgetedCats.length) {
       const budgetCard = this._card(`
@@ -148,7 +137,7 @@ export class DashboardView {
         wrap.style.marginBottom = 'var(--space-md)';
         wrap.innerHTML = `
           <div class="row-between" style="margin-bottom:4px">
-            <span style="font-size:14px">${cat.icon} ${cat.name}</span>
+            <span style="font-size:14px"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:-3px">${cat.icon}</span> ${cat.name}</span>
             <span style="font-size:13px;color:var(--text-secondary)">${formatCurrency(spent)} / ${formatCurrency(cat.monthlyBudget)}</span>
           </div>
         `;
@@ -164,9 +153,9 @@ export class DashboardView {
       const spent = spendByCat[cat.name] || 0;
       insightsEl.appendChild(this._card(`
         <div class="insight-card-header">
-          <div class="insight-card-title" style="color:var(--negative)">⚠️ Over Budget</div>
+          <div class="insight-card-title" style="color:var(--negative)"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:-2px">warning</span> Over Budget</div>
         </div>
-        <div style="font-size:15px;font-weight:600">${cat.icon} ${cat.name}</div>
+        <div style="font-size:15px;font-weight:600"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:-3px">${cat.icon}</span> ${cat.name}</div>
         <div class="insight-card-sub">${formatCurrency(spent)} spent · ${formatCurrency(cat.monthlyBudget)} budget · ${formatCurrency(spent - cat.monthlyBudget)} over</div>
       `, 'over-budget-card'));
     });
@@ -175,14 +164,14 @@ export class DashboardView {
     anomalies.forEach(({ cat, spend, avg, pct }) => {
       insightsEl.appendChild(this._card(`
         <div class="insight-card-title">Spending Spike</div>
-        <div style="font-size:15px;font-weight:600;margin-top:4px">${catMap[cat]?.icon || '📦'} ${cat} is ${pct}% above average</div>
+        <div style="font-size:15px;font-weight:600;margin-top:4px"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:-3px">${catMap[cat]?.icon || 'category'}</span> ${cat} is ${pct}% above average</div>
         <div class="insight-card-sub">${formatCurrency(spend)} this month vs ${formatCurrency(avg)} avg</div>
       `, 'anomaly-card'));
     });
 
     // 6. Top categories
     if (topCats.length) {
-      const topCard = this._card(`
+      insightsEl.appendChild(this._card(`
         <div class="insight-card-title" style="margin-bottom:var(--space-sm)">Top Spending</div>
         <div class="top-cats">
           ${topCats.map(([name, amt], i) => {
@@ -191,7 +180,7 @@ export class DashboardView {
             return `
               <div class="top-cat-row">
                 <span class="top-cat-rank">#${i + 1}</span>
-                <span style="font-size:18px">${cat.icon || '📦'}</span>
+                <span class="material-symbols-outlined" style="font-size:20px">${cat.icon || 'category'}</span>
                 <span class="top-cat-name">${name}</span>
                 <span class="top-cat-amount">${formatCurrency(amt)}</span>
                 <span style="font-size:12px;color:var(--text-muted);width:34px;text-align:right">${pct}%</span>
@@ -199,8 +188,7 @@ export class DashboardView {
             `;
           }).join('')}
         </div>
-      `);
-      insightsEl.appendChild(topCard);
+      `));
     }
 
     // 7. Projected spend
@@ -224,7 +212,7 @@ export class DashboardView {
     }
 
     if (!insightsEl.children.length) {
-      insightsEl.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><p>Add some transactions to see insights</p></div>`;
+      insightsEl.innerHTML = `<div class="empty-state"><div class="empty-icon"><span class="material-symbols-outlined">bar_chart</span></div><p>Add some transactions to see insights</p></div>`;
     }
   }
 

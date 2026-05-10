@@ -22,7 +22,7 @@ export function createCategory(data = {}) {
     name: data.name || 'New Category',
     type: data.type || 'expense',
     color: data.color || '#4fc3f7',
-    icon: data.icon || '📦',
+    icon: data.icon || 'category',
     monthlyBudget: data.monthlyBudget ?? null,
     order: data.order ?? 99,
   };
@@ -42,16 +42,16 @@ export function createRecurring(data = {}) {
 }
 
 export const DEFAULT_CATEGORIES = [
-  { name: 'Groceries',     type: 'expense', color: '#4fc3f7', icon: '🛒', order: 1 },
-  { name: 'Dining',        type: 'expense', color: '#f39c12', icon: '🍽️', order: 2 },
-  { name: 'Transport',     type: 'expense', color: '#3498db', icon: '🚗', order: 3 },
-  { name: 'Housing',       type: 'expense', color: '#9b59b6', icon: '🏠', order: 4 },
-  { name: 'Utilities',     type: 'expense', color: '#1abc9c', icon: '⚡', order: 5 },
-  { name: 'Entertainment', type: 'expense', color: '#e91e63', icon: '🎬', order: 6 },
-  { name: 'Health',        type: 'expense', color: '#2ecc71', icon: '❤️', order: 7 },
-  { name: 'Shopping',      type: 'expense', color: '#e67e22', icon: '🛍️', order: 8 },
-  { name: 'Personal Care', type: 'expense', color: '#00bcd4', icon: '💆', order: 9 },
-  { name: 'Subscriptions', type: 'expense', color: '#ff5722', icon: '📱', order: 10 },
-  { name: 'Income',        type: 'income',  color: '#2ecc71', icon: '💰', order: 11 },
-  { name: 'Uncategorized', type: 'expense', color: '#666',    icon: '📦', order: 12 },
+  { name: 'Groceries',     type: 'expense', color: '#4fc3f7', icon: 'shopping_cart',  order: 1 },
+  { name: 'Dining',        type: 'expense', color: '#f39c12', icon: 'restaurant',     order: 2 },
+  { name: 'Transport',     type: 'expense', color: '#3498db', icon: 'directions_car', order: 3 },
+  { name: 'Housing',       type: 'expense', color: '#9b59b6', icon: 'home',           order: 4 },
+  { name: 'Utilities',     type: 'expense', color: '#1abc9c', icon: 'bolt',           order: 5 },
+  { name: 'Entertainment', type: 'expense', color: '#e91e63', icon: 'movie',          order: 6 },
+  { name: 'Health',        type: 'expense', color: '#2ecc71', icon: 'favorite',       order: 7 },
+  { name: 'Shopping',      type: 'expense', color: '#e67e22', icon: 'shopping_bag',   order: 8 },
+  { name: 'Personal Care', type: 'expense', color: '#00bcd4', icon: 'spa',            order: 9 },
+  { name: 'Subscriptions', type: 'expense', color: '#ff5722', icon: 'smartphone',     order: 10 },
+  { name: 'Income',        type: 'income',  color: '#2ecc71', icon: 'payments',       order: 11 },
+  { name: 'Uncategorized', type: 'expense', color: '#666',    icon: 'category',       order: 12 },
 ].map(createCategory);

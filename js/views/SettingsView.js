@@ -9,7 +9,7 @@ const CAT_COLORS = [
   '#1abc9c','#e67e22','#3498db','#e91e63','#00bcd4','#8bc34a','#ff5722',
 ];
 
-const CAT_ICONS = ['🛒','🍽️','🚗','🏠','⚡','🎬','❤️','🛍️','💆','📱','💰','📦','☕','✈️','🎓','🏋️','🐾','🎁'];
+const CAT_ICONS = ['shopping_cart','restaurant','directions_car','home','bolt','movie','favorite','shopping_bag','spa','smartphone','payments','category','coffee','flight','school','fitness_center','pets','card_giftcard'];
 
 export class SettingsView {
   constructor(root) {
@@ -80,14 +80,14 @@ export class SettingsView {
     el.className = 'cat-item';
     el.innerHTML = `
       <div class="cat-color-dot" style="background:${cat.color}"></div>
-      <div class="cat-icon">${cat.icon}</div>
+      <div class="cat-icon"><span class="material-symbols-outlined">${cat.icon}</span></div>
       <div class="cat-info">
         <div class="cat-name">${cat.name}</div>
         <div class="cat-budget">${cat.monthlyBudget ? 'Budget: ' + formatCurrency(cat.monthlyBudget) + '/mo' : 'No budget'}</div>
       </div>
       <div class="cat-actions">
-        <button class="btn-icon" style="font-size:16px" data-action="edit">✏️</button>
-        <button class="btn-icon" style="font-size:16px" data-action="delete">🗑️</button>
+        <button class="btn-icon" data-action="edit"><span class="material-symbols-outlined" style="font-size:18px">edit</span></button>
+        <button class="btn-icon" data-action="delete"><span class="material-symbols-outlined" style="font-size:18px">delete</span></button>
       </div>
     `;
     el.querySelector('[data-action="edit"]').addEventListener('click', () => this._openCatForm(cat, allCats));
@@ -104,7 +104,7 @@ export class SettingsView {
 
   _openCatForm(cat, allCats) {
     let selectedColor = cat?.color || CAT_COLORS[0];
-    let selectedIcon = cat?.icon || '📦';
+    let selectedIcon = cat?.icon || 'category';
 
     const content = document.createElement('div');
     content.innerHTML = `
@@ -133,7 +133,7 @@ export class SettingsView {
       <div class="field">
         <label>Icon</label>
         <div class="color-picker" id="icon-picker">
-          ${CAT_ICONS.map(i => `<button class="color-swatch" style="background:var(--bg-input);font-size:18px;display:flex;align-items:center;justify-content:center;border:2px solid ${i === selectedIcon ? '#fff' : 'transparent'}" data-icon="${i}">${i}</button>`).join('')}
+          ${CAT_ICONS.map(i => `<button class="color-swatch" style="background:var(--bg-input);display:flex;align-items:center;justify-content:center;border:2px solid ${i === selectedIcon ? '#fff' : 'transparent'}" data-icon="${i}"><span class="material-symbols-outlined" style="font-size:20px">${i}</span></button>`).join('')}
         </div>
       </div>
       <div class="row" style="gap:var(--space-sm);margin-top:var(--space-md)">
@@ -219,8 +219,8 @@ export class SettingsView {
         <input type="checkbox" ${rec.active ? 'checked' : ''}>
         <div class="toggle-track"></div>
       </label>
-      <button class="btn-icon" style="font-size:16px" data-action="edit">✏️</button>
-      <button class="btn-icon" style="font-size:16px" data-action="delete">🗑️</button>
+      <button class="btn-icon" data-action="edit"><span class="material-symbols-outlined" style="font-size:18px">edit</span></button>
+      <button class="btn-icon" data-action="delete"><span class="material-symbols-outlined" style="font-size:18px">delete</span></button>
     `;
 
     el.querySelector('input[type=checkbox]').addEventListener('change', async (e) => {
@@ -255,7 +255,7 @@ export class SettingsView {
       <div class="field">
         <label>Category</label>
         <select id="rec-category">
-          ${categories.map(c => `<option value="${c.name}" ${c.name === (rec?.category || '') ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('')}
+          ${categories.map(c => `<option value="${c.name}" ${c.name === (rec?.category || '') ? 'selected' : ''}>${c.name}</option>`).join('')}
         </select>
       </div>
       <div class="field">

@@ -16,9 +16,9 @@ export class MonthlyView {
   _render() {
     this._root.innerHTML = `
       <div class="month-nav">
-        <button class="btn-icon" id="prev-month">‹</button>
+        <button class="btn-icon" id="prev-month"><span class="material-symbols-outlined">chevron_left</span></button>
         <span class="month-nav-label" id="month-label">${monthLabel(this._mk)}</span>
-        <button class="btn-icon" id="next-month">›</button>
+        <button class="btn-icon" id="next-month"><span class="material-symbols-outlined">chevron_right</span></button>
       </div>
 
       <div id="summary-row"></div>
@@ -64,7 +64,6 @@ export class MonthlyView {
     const totalExpense = txns.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
     const net = totalIncome - totalExpense;
 
-    // Summary cards
     this._root.querySelector('#summary-row').innerHTML = `
       <div class="summary-cards">
         <div class="summary-card">
@@ -82,7 +81,6 @@ export class MonthlyView {
       </div>
     `;
 
-    // Budget table (expense categories with spending)
     const spendByCat = {};
     txns.filter(t => t.type === 'expense').forEach(t => {
       spendByCat[t.category] = (spendByCat[t.category] || 0) + t.amount;
@@ -110,7 +108,7 @@ export class MonthlyView {
         row.innerHTML = `
           <div class="budget-row-header">
             <div class="budget-row-name">
-              <span>${cat.icon}</span>
+              <span class="material-symbols-outlined" style="font-size:18px">${cat.icon}</span>
               <span>${cat.name}</span>
             </div>
             <div class="budget-row-amounts">
@@ -130,12 +128,11 @@ export class MonthlyView {
       tableEl.appendChild(table);
     }
 
-    // Transaction list grouped by date
     const listEl = this._root.querySelector('#txn-list');
     txns.sort((a, b) => b.date.localeCompare(a.date));
 
     if (!txns.length) {
-      listEl.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><p>No transactions</p></div>`;
+      listEl.innerHTML = `<div class="empty-state"><div class="empty-icon"><span class="material-symbols-outlined">inbox</span></div><p>No transactions</p></div>`;
       return;
     }
 
@@ -156,7 +153,7 @@ export class MonthlyView {
         row.className = 'txn-row';
         row.style.cursor = 'pointer';
         row.innerHTML = `
-          <span style="font-size:22px">${cat.icon || '📦'}</span>
+          <span class="material-symbols-outlined" style="font-size:22px">${cat.icon || 'category'}</span>
           <div class="txn-info">
             <div class="txn-merchant">${txn.merchant || txn.category}</div>
             <div class="txn-meta"><span class="txn-date">${txn.category}</span></div>

@@ -38,7 +38,7 @@ export class TransactionForm {
       <div class="field">
         <label>Category</label>
         <select id="f-category">
-          ${categories.map(c => `<option value="${c.name}" ${c.name === (data.category || 'Uncategorized') ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('')}
+          ${categories.map(c => `<option value="${c.name}" ${c.name === (data.category || 'Uncategorized') ? 'selected' : ''}>${c.name}</option>`).join('')}
         </select>
       </div>
       <div class="field">
@@ -66,7 +66,6 @@ export class TransactionForm {
       onClose: () => {},
     }).open();
 
-    // Type toggle
     let selectedType = data.type || 'expense';
     content.querySelectorAll('[data-type]').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -132,7 +131,6 @@ export class TransactionForm {
       }
     });
 
-    // Focus amount field
     content.querySelector('#f-amount')?.focus();
   }
 }
