@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Budget AI</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/views/dashboard.css">
+  <link rel="stylesheet" href="css/views/transactions.css">
+  <link rel="stylesheet" href="css/views/monthly.css">
+  <link rel="stylesheet" href="css/views/settings.css">
+</head>
+<body>
+  <div class="app-wrapper">
+    <main id="app-root">
+      <div class="loading-spinner"><div class="spinner"></div></div>
+    </main>
+
+    <nav class="nav-bar">
+      <a class="nav-item" data-route="dashboard" href="#dashboard">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" data-route="transactions" href="#transactions">
+        <span class="nav-icon">🎤</span>
+        <span>Add</span>
+      </a>
+      <a class="nav-item" data-route="monthly" href="#monthly">
+        <span class="nav-icon">📅</span>
+        <span>Monthly</span>
+      </a>
+      <a class="nav-item" data-route="settings" href="#settings">
+        <span class="nav-icon">⚙️</span>
+        <span>Settings</span>
+      </a>
+    </nav>
+  </div>
+
+  <div id="toast-container"></div>
+  <div id="modal-container"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

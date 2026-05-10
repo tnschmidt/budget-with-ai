@@ -1,0 +1,81 @@
+.summary-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.summary-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-sm);
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.summary-card .label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.summary-card .value {
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-card .value.income  { color: var(--positive); }
+.summary-card .value.expense { color: var(--negative); }
+.summary-card .value.net-pos { color: var(--positive); }
+.summary-card .value.net-neg { color: var(--negative); }
+
+/* Budget table */
+.budget-table {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+}
+
+.budget-row {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.budget-row-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.budget-row-name {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.budget-row-amounts {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+.budget-row-amounts .spent {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.export-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-md);
+}

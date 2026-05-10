@@ -1,0 +1,56 @@
+:root {
+  /* Backgrounds — matching rental-tracker dark palette */
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #2a2a3e;
+  --bg-card: #252538;
+  --bg-input: #1e1e30;
+
+  /* Text */
+  --text-primary: #eee;
+  --text-secondary: #aaa;
+  --text-muted: #666;
+
+  /* Accents */
+  --accent: #4fc3f7;
+  --accent-dark: #0288d1;
+  --positive: #2ecc71;
+  --negative: #e74c3c;
+  --warning: #f39c12;
+
+  /* Category palette */
+  --cat-1: #4fc3f7;
+  --cat-2: #2ecc71;
+  --cat-3: #e74c3c;
+  --cat-4: #f39c12;
+  --cat-5: #9b59b6;
+  --cat-6: #1abc9c;
+  --cat-7: #e67e22;
+  --cat-8: #3498db;
+  --cat-9: #e91e63;
+  --cat-10: #00bcd4;
+  --cat-11: #8bc34a;
+  --cat-12: #ff5722;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', monospace;
+
+  /* Transitions */
+  --transition: 0.2s ease;
+
+  /* Nav height */
+  --nav-height: 56px;
+}

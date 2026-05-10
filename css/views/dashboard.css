@@ -1,0 +1,139 @@
+.insight-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.insight-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.insight-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.insight-card-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.insight-card-value {
+  font-size: 26px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.insight-card-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* Anomaly alert */
+.anomaly-card {
+  border-left: 3px solid var(--warning);
+  background: rgba(243,156,18,0.08);
+}
+
+.anomaly-card .insight-card-title {
+  color: var(--warning);
+}
+
+/* Over-budget card */
+.over-budget-card {
+  border-left: 3px solid var(--negative);
+  background: rgba(231,76,60,0.08);
+}
+
+/* Top categories */
+.top-cats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.top-cat-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.top-cat-rank {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.top-cat-name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.top-cat-amount {
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Sparkline chart */
+.sparkline-wrap {
+  margin-top: var(--space-md);
+}
+
+.sparkline-canvas {
+  width: 100%;
+  height: 60px;
+  display: block;
+}
+
+.sparkline-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.sparkline-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  flex: 1;
+}
+
+/* FAB (floating add button) */
+.fab {
+  position: fixed;
+  bottom: calc(var(--nav-height) + 16px);
+  right: calc(50% - 200px + 16px);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #000;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(79,195,247,0.4);
+  cursor: pointer;
+  transition: transform var(--transition);
+  z-index: 50;
+}
+
+.fab:active { transform: scale(0.93); }
+
+@media (max-width: 400px) {
+  .fab { right: 16px; }
+}
