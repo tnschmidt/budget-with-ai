@@ -50,11 +50,16 @@ export class ClaudeService {
       messages: [{ role: 'user', content: transcript }],
     };
 
-    const res = await fetch(url, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(body),
-    });
+    let res;
+    try {
+      res = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body),
+      });
+    } catch {
+      throw new Error('NETWORK_ERROR');
+    }
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));

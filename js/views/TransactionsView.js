@@ -117,6 +117,10 @@ export class TransactionsView {
         toast('Could not parse — opening manual form', 'warning');
         const form = new TransactionForm({ onSave: () => this._loadList() });
         await form.open({ note: transcript, source: 'speech' });
+      } else if (err.message === 'NETWORK_ERROR') {
+        toast('Cannot reach Claude API — set a Proxy URL in Settings or disable browser extensions', 'error');
+        const form = new TransactionForm({ onSave: () => this._loadList() });
+        await form.open({ note: transcript, source: 'speech' });
       } else {
         toast('AI error: ' + err.message, 'error');
         const form = new TransactionForm({ onSave: () => this._loadList() });
